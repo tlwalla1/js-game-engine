@@ -2,18 +2,18 @@
   "name": "game-engine",
   "version": "1.0.0",
   "description": "My project following the Apress book around 2dGameEngine creation.",
-  "main": "index.js",
+  "main": "index.ts",
   "author": "Tyler Wallace",
   "license": "MIT",
   "scripts": {
-    "start": "webpack"
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "build-files": "tsc"
   },
   "devDependencies": {
-    "babel-core": "^6.21.0",
-    "babel-loader": "^6.2.10",
-    "babel-preset-es2015": "^6.18.0",
-    "eslint": "^3.13.0",
-    "eslint-config-google": "^0.7.1",
+    "awesome-typescript-loader": "^3.0.0-beta.17",
+    "source-map-loader": "^0.1.5",
+    "typescript": "^2.1.4",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"
   }
