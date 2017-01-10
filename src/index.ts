@@ -1,1 +1,2 @@
-export * from './canvas/main';
+export * from './webgl';
+export * from './vertex-buffer';
