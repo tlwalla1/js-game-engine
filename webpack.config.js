@@ -3,7 +3,10 @@ const path = require('path');
 
 module.exports = { // eslint-disable-line
   devtool: 'source-map',
-  entry: './index',
+  entry: {
+    // engine: './src/engine/index.ts',
+    game: './src/game/index.ts',
+  },
   module: {
     loaders: [
       // All files with a '.ts' extension will be
