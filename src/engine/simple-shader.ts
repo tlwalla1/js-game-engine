@@ -5,22 +5,24 @@ export class SimpleShader {
   private shaderVertexPositionAttribute: number;
   private core: Core;
   private gl: WebGLRenderingContext;
+  private pixelColor: WebGLUniformLocation;
 
   constructor(core: Core) {
     this.core = core;
     this.gl = core.gl;
     this._compiledShader = null;
     this.shaderVertexPositionAttribute = null;
+    this.pixelColor = null;
   }
   /**
    * Initialize the SimpleShader
    * IMPORTANT: Requires Core to be constructed and linked to a VertexBuffer
    * prior to being ran.
    */
-  initialize(vertexShaderId: string, fragmentShaderId: string): void {
+  initialize(vertexShaderPath: string, fragmentShaderPath: string): void {
     // A: load and compile the vertex and fragment shaders
-    const vertexShader = this.loadAndCompileShader(vertexShaderId, this.gl.VERTEX_SHADER);
-    const fragmentShader = this.loadAndCompileShader(fragmentShaderId, this.gl.FRAGMENT_SHADER);
+    const vertexShader = this.loadAndCompileShader(vertexShaderPath, this.gl.VERTEX_SHADER);
+    const fragmentShader = this.loadAndCompileShader(fragmentShaderPath, this.gl.FRAGMENT_SHADER);
 
     // B: Create and link the shaders into a program.
     this._compiledShader = this.gl.createProgram();
@@ -50,21 +52,39 @@ export class SimpleShader {
       false, // if the content is normalized vectors
       0, // number of bytes to skip in between elements
       0, // offset to the first element
-    )
+    );
+
+    // G: Gets a reference to the uniform variable uPixelColor in the fragment shader
+    this.pixelColor = this.gl.getUniformLocation(this.compiledShader, 'uPixelColor');
   }
   /**
    * Sets the program for the Engine Core
    * Enables the vertix attribute for the shader
    */
-  activateShader() {
+  activateShader(pixelColor: number[]) {
     this.gl.useProgram(this._compiledShader);
     this.gl.enableVertexAttribArray(this.shaderVertexPositionAttribute);
+    this.gl.uniform4fv(this.pixelColor, pixelColor);
   }
 
-  private loadAndCompileShader(id: string, shaderType: number) {
+  private loadAndCompileShader(filepath: string, shaderType: number) {
     // TODO: Make this more generic (injected)
-    const shaderText = document.getElementById(id);
-    const shaderSource = shaderText.firstChild.textContent;
+    // const shaderText = document.getElementById(id);
+    // const shaderSource = shaderText.firstChild.textContent;
+    const request = new XMLHttpRequest();
+    request.open('GET', filepath, false);
+    try {
+      request.send();
+    } catch (error) {
+      alert(`Failed to load shader: ${filepath}`);
+      return;
+    }
+    const shaderSource = request.responseText;
+
+    if (shaderSource === null) {
+      alert(`WARNING: Loading of: ${filepath} failed!`);
+      return;
+    }
   
     // A: Create the shader based on the shader type: vertex or fragment
     const _compiledShader = this.gl.createShader(shaderType);

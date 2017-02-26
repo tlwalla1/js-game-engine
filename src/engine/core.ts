@@ -17,6 +17,9 @@ export class Color {
     this.blue = blue;
     this.alpha = alpha;
   }
+  toArray() {
+    return [this.red, this.green, this.blue, this.alpha];
+  }
 }
 
 export class Core {
