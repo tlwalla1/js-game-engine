@@ -11,10 +11,14 @@
     "build-files": "tsc"
   },
   "devDependencies": {
+    "@types/gl-matrix": "^2.2.34",
     "awesome-typescript-loader": "^3.0.0-rc.2",
     "source-map-loader": "^0.1.6",
     "typescript": "^2.1.6",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
+  },
+  "dependencies": {
+    "gl-matrix": "^2.3.2"
   }
 }

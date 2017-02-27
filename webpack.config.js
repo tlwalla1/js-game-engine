@@ -1,11 +1,13 @@
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = { // eslint-disable-line
   devtool: 'source-map',
   entry: {
     // engine: './src/engine/index.ts',
     game: './src/game/index.ts',
+    vendor: 'gl-matrix',
   },
   module: {
     rules: [
@@ -32,6 +34,9 @@ module.exports = { // eslint-disable-line
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+    }),
     new CheckerPlugin(),
   ],
 };

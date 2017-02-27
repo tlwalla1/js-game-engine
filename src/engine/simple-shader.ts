@@ -1,11 +1,14 @@
 import { Core } from './core';
+import { Transform } from './transform';
+import { mat4 } from 'gl-matrix';
 
 export class SimpleShader {
   private _compiledShader: WebGLProgram;
-  private shaderVertexPositionAttribute: number;
   private core: Core;
   private gl: WebGLRenderingContext;
+  private modelTransform: WebGLUniformLocation;
   private pixelColor: WebGLUniformLocation;
+  private shaderVertexPositionAttribute: number;
 
   constructor(core: Core) {
     this.core = core;
@@ -56,6 +59,7 @@ export class SimpleShader {
 
     // G: Gets a reference to the uniform variable uPixelColor in the fragment shader
     this.pixelColor = this.gl.getUniformLocation(this.compiledShader, 'uPixelColor');
+    this.modelTransform = this.gl.getUniformLocation(this.compiledShader, 'uModelTransform');
   }
   /**
    * Sets the program for the Engine Core
@@ -65,6 +69,9 @@ export class SimpleShader {
     this.gl.useProgram(this._compiledShader);
     this.gl.enableVertexAttribArray(this.shaderVertexPositionAttribute);
     this.gl.uniform4fv(this.pixelColor, pixelColor);
+  }
+  loadObjectTransform(modelTransform: mat4) {
+    this.gl.uniformMatrix4fv(this.modelTransform, false, modelTransform);
   }
 
   private loadAndCompileShader(filepath: string, shaderType: number) {
