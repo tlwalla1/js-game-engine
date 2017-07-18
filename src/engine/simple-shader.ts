@@ -9,6 +9,7 @@ export class SimpleShader {
   private modelTransform: WebGLUniformLocation;
   private pixelColor: WebGLUniformLocation;
   private shaderVertexPositionAttribute: number;
+  private viewProjectionTransform: WebGLUniformLocation = null;
 
   constructor(core: Core) {
     this.core = core;
@@ -60,13 +61,15 @@ export class SimpleShader {
     // G: Gets a reference to the uniform variable uPixelColor in the fragment shader
     this.pixelColor = this.gl.getUniformLocation(this.compiledShader, 'uPixelColor');
     this.modelTransform = this.gl.getUniformLocation(this.compiledShader, 'uModelTransform');
+    this.viewProjectionTransform = this.gl.getUniformLocation(this.compiledShader, 'uViewProjectionTransform');
   }
   /**
    * Sets the program for the Engine Core
    * Enables the vertix attribute for the shader
    */
-  activateShader(pixelColor: number[]) {
+  activateShader(pixelColor: number[], viewProjectionMatrix: any) {
     this.gl.useProgram(this._compiledShader);
+    this.gl.uniformMatrix4fv(this.viewProjectionTransform, false, viewProjectionMatrix);
     this.gl.enableVertexAttribArray(this.shaderVertexPositionAttribute);
     this.gl.uniform4fv(this.pixelColor, pixelColor);
   }

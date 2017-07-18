@@ -66,7 +66,7 @@ export class Core {
     this._gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
     if (this._gl === null) {
-      document.write('<br><b>WebGL is not supported!</br>');
+      document.write('<br><b>WebGL is not supported!</b></br>');
       return;
     }
 

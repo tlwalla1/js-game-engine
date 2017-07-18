@@ -17,8 +17,8 @@ export class Renderable {
     this._transform = new Transform();
     this._color = new Color(1, 1, 1, 1);
   }
-  draw() {
-    this.shader.activateShader(this.color.toArray());
+  draw(viewProjectionMatrix: any) {
+    this.shader.activateShader(this.color.toArray(), viewProjectionMatrix);
     this.shader.loadObjectTransform(this.transform.transform);
     this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
   }
