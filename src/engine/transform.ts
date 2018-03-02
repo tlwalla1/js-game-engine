@@ -1,6 +1,16 @@
 import { Position, Size } from './core';
 import { vec2, vec3, mat4 } from 'gl-matrix';
 
+export enum RotationDirection {
+  COUNTERCLOCKWISE = -1,
+  NONE,
+  CLOCKWISE,
+};
+
+const convertToRadians = (degrees: number) => {
+  return degrees * Math.PI / 180;
+}
+
 export class Transform {
   private _position: Position;
   private _rotationInRad: number;
@@ -24,7 +34,7 @@ export class Transform {
     }
   }
   set rotationInDegrees(rotation: number) {
-    this.rotationInRadians = rotation * Math.PI / 180.0;
+    this.rotationInRadians = convertToRadians(rotation);
   }
   get rotationInRadians() {
     return this._rotationInRad;
@@ -50,6 +60,9 @@ export class Transform {
     mat4.scale(matrix, matrix, vec3.fromValues(size.width, size.height, 1.0));
 
     return matrix;
+  }
+  rotateByDegrees(degrees: number, direction: RotationDirection) {
+    this.rotationInRadians = this.rotationInRadians + (direction * convertToRadians(degrees));
   }
   // set height(height: number) {
   //   this._scale[1] = height;

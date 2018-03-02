@@ -1,3 +1,3 @@
-import { initGame } from './game';
+import { Game } from './game';
 
-initGame('glcanvas');
+new Game('glcanvas');

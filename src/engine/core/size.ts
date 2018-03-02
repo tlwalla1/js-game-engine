@@ -6,6 +6,10 @@ export class Size {
     this.width = width;
     this.height = height;
   }
+  scaleBy(amount: number) {
+    this.width += amount;
+    this.height += amount;
+  }
   toArray() {
     return [this.width, this.height];
   }
