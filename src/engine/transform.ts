@@ -2,9 +2,9 @@ import { Position, Size } from './core';
 import { vec2, vec3, mat4 } from 'gl-matrix';
 
 export enum RotationDirection {
-  COUNTERCLOCKWISE = -1,
+  CLOCKWISE = -1,
   NONE,
-  CLOCKWISE,
+  COUNTERCLOCKWISE,
 };
 
 const convertToRadians = (degrees: number) => {
@@ -31,6 +31,9 @@ export class Transform {
     this._rotationInRad = rotation;
     while (this._rotationInRad > (2 * Math.PI)) {
       this._rotationInRad -= 2 * Math.PI;
+    }
+    while (this._rotationInRad < (-2 * Math.PI)) {
+      this._rotationInRad += 2 * Math.PI;
     }
   }
   set rotationInDegrees(rotation: number) {
