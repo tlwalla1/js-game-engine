@@ -17,18 +17,34 @@ class Timing {
   }
 }
 
+export interface LoopContext {
+  draw: Function,
+  update: Function,
+}
+
 export class GameLoop {
+  private draw: Function = () => {};
   private millisecondsPerFrame: number;
   private timing: Timing;
+  private updateFunctions: Function[];
   
-  constructor(private game: any, private fps = 60, private isRunning = false) {
+  constructor(private fps = 60, private isRunning = false) {
     this.millisecondsPerFrame = 1000 / this.fps;
+    this.updateFunctions = [];
   }
 
   start() {
     this.timing = new Timing(this.fps);
     this.isRunning = true;
     this.loop();
+  }
+
+  registerDrawFunction(draw: Function) {
+    this.draw = draw;
+  }
+
+  registerUpdateFunction(fn: Function, order?: number) {
+    this.updateFunctions.push(fn);
   }
 
   private loop() {
@@ -49,10 +65,11 @@ export class GameLoop {
 
     // C: Update game an appropriate amount of times to catch up on lag.
     while (this.timing.lag >= this.fps && this.isRunning) {
-      this.game.update();
+      this.updateFunctions.map(update => update());
+      // this.game.update();
       this.timing.subtractLag();
     }
 
-    this.game.draw();
+    this.draw();
   }
 }

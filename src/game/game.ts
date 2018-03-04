@@ -1,20 +1,29 @@
-import { Camera, Color, Core, GameLoop, Position, Renderable, RotationDirection, SimpleShader, Size, VertexBuffer } from '../engine';
+import {
+  Camera,
+  Color,
+  Core,
+  Position,
+  Renderable,
+  RotationDirection,
+  SimpleShader,
+  Size,
+  VertexBuffer,
+} from '../engine';
 import { mat4, vec2, vec3 } from 'gl-matrix';
 
 export class Game {
   private camera: Camera;
   private core: Core;
-  private gameLoop: GameLoop;
+  private hasUpdated: boolean;
   private renderables: Renderable[];
   private shader: SimpleShader;
   private vertexBuffer: VertexBuffer;
   constructor(htmlCanvasId: string) {
     this.core = new Core();
     this.vertexBuffer = new VertexBuffer(this.core);
-    this.gameLoop = new GameLoop(this);
     this.renderables = [];
     this.core.setVertexBuffer(this.vertexBuffer);
-    this.core.initializeWebGL(htmlCanvasId);
+    this.core.initialize(htmlCanvasId, { update: this.update.bind(this), draw: this.draw.bind(this) });
     this.initialize();
   }
   initialize() {
@@ -51,13 +60,17 @@ export class Game {
 
     this.renderables.push(whiteSquare, redSquare);
 
-    this.gameLoop.start();
+    this.core.startGame();
   }
 
   private draw() {
+    if (!this.hasUpdated) {
+      return;
+    }
     this.core.clearCanvas(new Color(0.9, 0.9, 0.9, 1));
     this.camera.setupViewProjection();
     this.renderables.forEach(item => item.draw(this.camera.getViewProjectionMatrix()));
+    this.hasUpdated = false;
   }
 
   private update() {
@@ -74,6 +87,7 @@ export class Game {
       redTransform.size = new Size(2, 2);
     }
     redTransform.size.scaleBy(0.05);
+    this.hasUpdated = true;
   }
 }
 

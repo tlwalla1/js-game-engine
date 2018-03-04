@@ -9,6 +9,7 @@ module.exports = { // eslint-disable-line
     game: './src/game/index.ts',
     vendor: 'gl-matrix',
   },
+  mode: 'development',
   module: {
     rules: [
       // All files with a '.ts' extension will be
@@ -34,9 +35,11 @@ module.exports = { // eslint-disable-line
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-    }),
     new CheckerPlugin(),
   ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    }
+  }
 };

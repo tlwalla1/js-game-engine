@@ -1,3 +1,5 @@
+import { GameLoop, LoopContext } from './gameloop';
+import { Input } from './input';
 import { VertexBuffer } from './vertex-buffer';
 
 export class Color {
@@ -30,6 +32,8 @@ export class Core {
   // The graphical context for drawing.
   private _gl: WebGLRenderingContext;
   private _vertexBuffer: VertexBuffer;
+  private input: Input;
+  private gameLoop: GameLoop;
 
   constructor(vertexBuffer?: VertexBuffer) {
     this._vertexBuffer = vertexBuffer || null;
@@ -53,12 +57,21 @@ export class Core {
     // Clear to the color previously set
     this._gl.clear(this._gl.COLOR_BUFFER_BIT);
   }
+  initialize(htmlCanvasId: string, loopContext: LoopContext) {
+    this.initializeWebGL(htmlCanvasId);
+    this._vertexBuffer.initialize(this);
+    this.input = new Input();
+    this.gameLoop = new GameLoop();
+    this.gameLoop.registerUpdateFunction(this.input.update.bind(this.input));
+    this.gameLoop.registerUpdateFunction(loopContext.update);
+    this.gameLoop.registerDrawFunction(loopContext.draw);
+  }
   /**
    * Initializes the WebGL control and the VertexBuffer
    * IMPORTANT: VertexBuffer should be set prior to calling this function
    * using the 'setVertexBuffer' function.
    */
-  initializeWebGL(htmlCanvasId: string) {
+  private initializeWebGL(htmlCanvasId: string) {
     const canvas = <HTMLCanvasElement>document.getElementById(htmlCanvasId);
 
     // Get the standard or experimental webgl and binds to the Canvas area
@@ -69,12 +82,12 @@ export class Core {
       document.write('<br><b>WebGL is not supported!</b></br>');
       return;
     }
-
-    // Now initialize the VertexBuffer
-    this._vertexBuffer.initialize(this);
   }
   setVertexBuffer(vertexBuffer: VertexBuffer) {
     this._vertexBuffer = vertexBuffer;
+  }
+  startGame() {
+    this.gameLoop.start();
   }
 
   /**
