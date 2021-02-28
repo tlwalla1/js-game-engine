@@ -76,7 +76,7 @@ export class Core {
 
     // Get the standard or experimental webgl and binds to the Canvas area
     // store the results to the isntance variable _gl
-    this._gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    this._gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as WebGLRenderingContext;
 
     if (this._gl === null) {
       document.write('<br><b>WebGL is not supported!</b></br>');

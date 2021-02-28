@@ -1,41 +1,45 @@
-const { CheckerPlugin } = require('awesome-typescript-loader');
+const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = { // eslint-disable-line
-  devtool: 'source-map',
   entry: {
     // engine: './src/engine/index.ts',
     game: './src/game/index.ts',
     vendor: 'gl-matrix',
   },
+  devtool: 'inline-source-map',
+  devServer: {
+    contentBase: './dist',
+  },
   mode: 'development',
   module: {
     rules: [
-      // All files with a '.ts' extension will be
-      // handled by 'awesome-typescript-loader'.
       {
-        test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
       },
-      // All output '.js' files will have any
-        // sourcemaps re-processed by 'source-map-loader'.
-        {
-          test: /\.js$/,
-          loader: 'source-map-loader',
-        },
     ],
   },
   output: {
     path: path.resolve(__dirname, 'dist'), // eslint-disable-line
-    publicPath: '/bundle/',
+    publicPath: './',
     filename: '[name].bundle.js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
-    new CheckerPlugin(),
+    new CopyPlugin({
+      patterns: [
+        { from: './src/game/assets', to: 'assets' },
+        { from: './src/glslshaders', to: 'src/glslshaders' }
+      ],
+    }),
+    new HtmlWebpackPlugin({ template: './src/game/index.html' }),
+    new HtmlWebpackTagsPlugin({ tags: ['assets/reset.css']}),
   ],
   optimization: {
     splitChunks: {

@@ -9,7 +9,7 @@ import {
   Size,
   VertexBuffer,
 } from '../engine';
-import { mat4, vec2, vec3 } from 'gl-matrix';
+// import { mat4, vec2, vec3 } from 'gl-matrix';
 
 export class Game {
   private camera: Camera;
@@ -18,6 +18,7 @@ export class Game {
   private renderables: Renderable[];
   private shader: SimpleShader;
   private vertexBuffer: VertexBuffer;
+
   constructor(htmlCanvasId: string) {
     this.core = new Core();
     this.vertexBuffer = new VertexBuffer(this.core);
@@ -26,6 +27,7 @@ export class Game {
     this.core.initialize(htmlCanvasId, { update: this.update.bind(this), draw: this.draw.bind(this) });
     this.initialize();
   }
+
   initialize() {
     this.camera = new Camera(
       new Position(20, 60),

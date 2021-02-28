@@ -6,21 +6,23 @@
   "author": "Tyler Wallace",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack serve",
     "build": "webpack",
     "build-files": "tsc"
   },
-  "devDependencies": {
-    "@types/gl-matrix": "^2.4.0",
-    "awesome-typescript-loader": "^3.5.0",
-    "source-map-loader": "^0.2.3",
-    "typescript": "^2.7.2",
-    "webpack": "^4.1.0",
-    "webpack-cli": "^2.0.10",
-    "webpack-dev-server": "^3.1.0"
-  },
   "dependencies": {
-    "gl-matrix": "^2.4.0",
-    "rxjs": "^5.5.6"
+    "gl-matrix": "^3.2.0",
+    "rxjs": "^6.6.6"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^7.0.0",
+    "html-webpack-plugin": "^5.2.0",
+    "html-webpack-tags-plugin": "^3.0.0",
+    "source-map-loader": "^2.0.1",
+    "ts-loader": "^8.0.17",
+    "typescript": "^4.2.2",
+    "webpack": "^5.24.2",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
