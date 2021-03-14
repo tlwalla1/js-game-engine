@@ -2,9 +2,9 @@ import { Position, Size } from './core';
 import { vec2, vec3, mat4 } from 'gl-matrix';
 
 export enum RotationDirection {
-  CLOCKWISE = -1,
-  NONE,
-  COUNTERCLOCKWISE,
+  Clockwise = -1,
+  None,
+  CounterClockwise,
 };
 
 const convertToRadians = (degrees: number) => {

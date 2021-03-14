@@ -63,7 +63,7 @@ export class GameLoop {
     this.timing.previous = this.timing.current;
     this.timing.addLag();
 
-    // C: Update game an appropriate amount of times to catch up on lag.
+    // C: Update the game an appropriate amount of times to catch up on lag.
     while (this.timing.lag >= this.fps && this.isRunning) {
       this.updateFunctions.map(update => update());
       // this.game.update();

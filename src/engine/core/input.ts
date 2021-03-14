@@ -1,44 +1,37 @@
-import { Keys } from './utils/keys';
-
 // TODO: Refactor this to utilize RxJS obserables for keyboard listening and emit events
 export class Input {
-  private previousKeyState: Array<boolean>;
-  private keysPressed: Array<boolean>;
-  private keysUp: Array<boolean>;
+  private previousKeyState: Map<string, boolean>;
+  private keysPressed: Map<string, boolean>;
+  private keysUp: Map<string, boolean>;
 
   constructor() {
-    this.previousKeyState = new Array<boolean>(222);
-    this.keysPressed = new Array(222);
-    this.keysUp = new Array(222);
-    this.previousKeyState.forEach((value, index) => {
-      this.previousKeyState[index] = false;
-      this.keysPressed[index] = false;
-      this.keysUp[index] = false;
-    });
+    this.previousKeyState = new Map<string, boolean>();
+    this.keysPressed = new Map<string, boolean>();
+    this.keysUp = new Map<string, boolean>();
     this.registerEventHandlers();
   }
 
-  public isKeyPressed(keyCode: Keys): boolean {
-    return this.keysPressed[keyCode];
+  public isKeyPressed(key: string): boolean {
+    return !!this.keysPressed.get(key);
   }
 
-  public isKeyUp(keyCode: Keys): boolean {
-    return this.keysUp[keyCode];
+  public isKeyUp(key: string): boolean {
+    return !!this.keysUp.get(key);
   }
 
   public update() {
-    for (let i = 0; i < Keys.LastKeyCode; i++) {
-      this.keysUp[i] = this.previousKeyState[i] && !this.keysPressed[i];
-      this.previousKeyState[i] = this.keysPressed[i];
-    }
+    this.keysPressed.forEach((isPressed, key) => {
+      this.keysUp.set(key, this.previousKeyState.get(key) && !this.keysPressed.get(key));
+      this.previousKeyState.set(key, isPressed);
+    });
   }
 
   private onKeyDown(event: KeyboardEvent) {
-    this.keysPressed[event.keyCode] = true;
+    this.keysPressed.set(event.key, true);
   }
 
   private onKeyUp(event: KeyboardEvent) {
-    this.keysPressed[event.keyCode] = false;
+    this.keysPressed.set(event.key, false);
   }
 
   private registerEventHandlers() {

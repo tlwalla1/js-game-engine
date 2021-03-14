@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = { // eslint-disable-line
   entry: {
     // engine: './src/engine/index.ts',
-    game: './src/game/index.ts',
+    game: './game/index.ts',
     vendor: 'gl-matrix',
   },
   devtool: 'inline-source-map',
@@ -25,8 +25,9 @@ module.exports = { // eslint-disable-line
   },
   output: {
     path: path.resolve(__dirname, 'dist'), // eslint-disable-line
-    publicPath: './',
+    // publicPath: './',
     filename: '[name].bundle.js',
+    clean: true,
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
@@ -34,11 +35,11 @@ module.exports = { // eslint-disable-line
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: './src/game/assets', to: 'assets' },
+        { from: './game/assets', to: 'assets' },
         { from: './src/glslshaders', to: 'src/glslshaders' }
       ],
     }),
-    new HtmlWebpackPlugin({ template: './src/game/index.html' }),
+    new HtmlWebpackPlugin({ template: './game/index.html' }),
     new HtmlWebpackTagsPlugin({ tags: ['assets/reset.css']}),
   ],
   optimization: {

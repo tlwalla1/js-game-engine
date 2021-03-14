@@ -8,7 +8,7 @@ import {
   SimpleShader,
   Size,
   VertexBuffer,
-} from '../engine';
+} from '../src/engine';
 // import { mat4, vec2, vec3 } from 'gl-matrix';
 
 export class Game {
@@ -78,17 +78,26 @@ export class Game {
   private update() {
     const whiteTransform = this.renderables[0].transform;
     const deltaX = 0.5;
-    if (whiteTransform.position.x > 30) {
-      whiteTransform.position = new Position(10, 60);
-    }
-    whiteTransform.position.x += deltaX;
-    whiteTransform.rotateByDegrees(1, RotationDirection.CLOCKWISE);
 
-    const redTransform = this.renderables[1].transform;
-    if (redTransform.size.width > 5) {
-      redTransform.size = new Size(2, 2);
+    if (this.core.input.isKeyPressed('ArrowRight')) {
+      if (whiteTransform.position.x > 30) {
+        whiteTransform.position = new Position(10, 60);
+      }
+      whiteTransform.position.x += deltaX;
     }
-    redTransform.size.scaleBy(0.05);
+
+    if (this.core.input.isKeyPressed('ArrowUp')) {
+      whiteTransform.rotateByDegrees(1, RotationDirection.Clockwise);
+    }
+
+    if (this.core.input.isKeyPressed('ArrowDown')) {
+      const redTransform = this.renderables[1].transform;
+      if (redTransform.size.width > 5) {
+        redTransform.size = new Size(2, 2);
+      }
+      redTransform.size.scaleBy(0.05);
+    }
+
     this.hasUpdated = true;
   }
 }
