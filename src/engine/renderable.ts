@@ -1,7 +1,6 @@
 import { Color, Core } from './core';
 import { Transform } from './transform';
 import { SimpleShader } from './simple-shader';
-import { mat4 } from 'gl-matrix';
 
 export class Renderable {
   private core: Core;

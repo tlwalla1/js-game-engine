@@ -11,6 +11,10 @@ export class SimpleShader {
   private shaderVertexPositionAttribute: number;
   private viewProjectionTransform: WebGLUniformLocation = null;
 
+  get compiledShader() {
+    return this._compiledShader;
+  }
+
   constructor(core: Core) {
     this.core = core;
     this.gl = core.gl;
@@ -18,6 +22,7 @@ export class SimpleShader {
     this.shaderVertexPositionAttribute = null;
     this.pixelColor = null;
   }
+
   /**
    * Initialize the SimpleShader
    * IMPORTANT: Requires Core to be constructed and linked to a VertexBuffer
@@ -63,6 +68,7 @@ export class SimpleShader {
     this.modelTransform = this.gl.getUniformLocation(this.compiledShader, 'uModelTransform');
     this.viewProjectionTransform = this.gl.getUniformLocation(this.compiledShader, 'uViewProjectionTransform');
   }
+
   /**
    * Sets the program for the Engine Core
    * Enables the vertix attribute for the shader
@@ -73,6 +79,7 @@ export class SimpleShader {
     this.gl.enableVertexAttribArray(this.shaderVertexPositionAttribute);
     this.gl.uniform4fv(this.pixelColor, pixelColor);
   }
+
   loadObjectTransform(modelTransform: mat4) {
     this.gl.uniformMatrix4fv(this.modelTransform, false, modelTransform);
   }
@@ -111,9 +118,5 @@ export class SimpleShader {
     }
 
     return _compiledShader;
-  }
-
-  get compiledShader() {
-    return this._compiledShader;
   }
 }

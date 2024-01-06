@@ -1,4 +1,4 @@
-// TODO: Refactor this to utilize RxJS obserables for keyboard listening and emit events
+// TODO: Refactor this to utilize RxJS observables for keyboard listening and emit events
 export class Input {
   private previousKeyState: Map<string, boolean>;
   private keysPressed: Map<string, boolean>;
